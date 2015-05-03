@@ -68,7 +68,7 @@ bool GetAllSubString(char *str, const char * const substr, vector<unsigned int> 
 {
 	if ((str == NULL) || (substr == NULL))
 	{
-		return NULL;
+		return false;
 	}
 
 	/*
