@@ -1,0 +1,1 @@
+select * from(select * from(select * from dbo.Student) as s1) as s2
