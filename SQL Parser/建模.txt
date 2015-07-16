@@ -1,0 +1,12 @@
+定义一种语法元素抽象g_element
+一个关键字也是一种语法元素抽象
+比如select * from student
+
+定义语法,g_element有个type属性，指示元素类型，比如sql关键字为sqlkey,value属性指示值为select。
+比如*为列列表.则其type属性为columncollection，值为一个columncollection类型的g_element的引用。
+所有元素对象都必须从g_element派生。
+
+表达式称为expression。
+一个expression有一个合法的模式列表。比如select 列名 [from 数据源]可以表达为ele1 + ele2 +? ele3，其中+号表示后面紧跟该元素,+?表示可有可无.ele1表示关键字select。当列名是常量，变量时可以省略第3个元素，否则不可以省略。
+
+( ()() ) ( ( () () ) ) ()

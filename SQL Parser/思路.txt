@@ -1,0 +1,213 @@
+[ FROM { <table_source> } [ ,...n ] ] 
+<table_source> ::= 
+{
+    table_or_view_name [ [ AS ] table_alias ] [ <tablesample_clause> ] 
+        [ WITH ( < table_hint > [ [ , ]...n ] ) ] 
+    | rowset_function [ [ AS ] table_alias ] 
+        [ ( bulk_column_alias [ ,...n ] ) ] 
+    | user_defined_function [ [ AS ] table_alias ] ]
+    | OPENXML <openxml_clause> 
+    | derived_table [ AS ] table_alias [ ( column_alias [ ,...n ] ) ] 
+    | <joined_table> 
+    | <pivoted_table> 
+    | <unpivoted_table>
+      | @variable [ [ AS ] table_alias ]
+        | @variable.function_call ( expression [ ,...n ] ) [ [ AS ] table_alias ] [ (column_alias [ ,...n ] ) ]
+}
+<tablesample_clause> ::=
+    TABLESAMPLE [SYSTEM] ( sample_number [ PERCENT | ROWS ] ) 
+        [ REPEATABLE ( repeat_seed ) ] 
+
+<joined_table> ::= 
+{
+    <table_source> <join_type> <table_source> ON <search_condition> 
+    | <table_source> CROSS JOIN <table_source> 
+    | left_table_source { CROSS | OUTER } APPLY right_table_source 
+    | [ ( ] <joined_table> [ ) ] 
+}
+<join_type> ::= 
+    [ { INNER | { { LEFT | RIGHT | FULL } [ OUTER ] } } [ <join_hint> ] ]
+    JOIN
+
+<pivoted_table> ::=
+    table_source PIVOT <pivot_clause> [ AS ] table_alias
+
+<pivot_clause> ::=
+        ( aggregate_function ( value_column [ [ , ]...n ]) 
+        FOR pivot_column 
+        IN ( <column_list> ) 
+    ) 
+
+<unpivoted_table> ::=
+    table_source UNPIVOT <unpivot_clause> [ AS ] table_alias
+
+<unpivot_clause> ::=
+        ( value_column FOR pivot_column IN ( <column_list> ) ) 
+
+<column_list> ::=
+          column_name [ ,...n ]
+
+
+
+Transact-SQL 语法约定 (Transact-SQL)
+SQL Server 2014
+其他版本
+
+下表列出了 Transact-SQL 参考的语法关系图中使用的约定，并进行了说明。
+
+约定
+	
+
+用于
+
+大写
+	
+
+Transact-SQL 关键字。
+
+斜体
+	
+
+用户提供的 Transact-SQL 语法的参数。
+
+粗体
+	
+
+数据库名、表名、列名、索引名、存储过程、实用工具、数据类型名以及必须按所显示的原样键入的文本。
+
+下划线
+	
+
+指示当语句中省略了包含带下划线的值的子句时应用的默认值。
+
+|（竖线）
+	
+
+分隔括号或大括号中的语法项。 只能使用其中一项。
+
+[ ]（方括号）
+	
+
+可选语法项。 不要键入方括号。
+
+{ }（大括号）
+	
+
+必选语法项。 不要键入大括号。
+
+[,...n]
+	
+
+指示前面的项可以重复 n 次。 各项之间以逗号分隔。
+
+[...n]
+	
+
+指示前面的项可以重复 n 次。 每一项由空格分隔。
+
+;
+	
+
+Transact-SQL 语句终止符。虽然在此版本的 SQL Server 中大部分语句不需要分号，但将来的版本需要分号。
+
+<label> ::=
+	
+
+语法块的名称。 此约定用于对可在语句中的多个位置使用的过长语法段或语法单元进行分组和标记。 可使用语法块的每个位置由括在尖括号内的标签指示：<标签>。
+
+集是表达式的集合，例如 <分组集>；列表是集的集合，例如 <组合元素列表>。
+多部分名称
+
+除非另外指定，否则，所有对数据库对象名的 Transact-SQL 引用将是由四部分组成的名称，格式如下：
+
+server_name .[database_name].[schema_name].object_name
+
+| database_name .[schema_name].object_name
+
+| schema_name . object_name
+
+| object_name
+
+server_name
+
+    指定链接的服务器名称或远程服务器名称。
+database_name
+
+    如果对象驻留在 SQL Server 的本地实例中，则指定 SQL Server 数据库的名称。 如果对象在链接服务器中，则 database_name 将指定 OLE DB 目录。
+schema_name
+
+    如果对象在 SQL Server 数据库中，则指定包含对象的架构的名称。 如果对象在链接服务器中，则 schema_name 将指定 OLE DB 架构名称。
+object_name
+
+    对象的名称。
+
+引用某个特定对象时，不必总是指定服务器、数据库和架构供 SQL Server 数据库引擎标识该对象。 但是，如果找不到该对象，将返回错误。
+注意 注意
+
+为了避免名称解析错误，建议只要指定了架构范围内的对象时就指定架构名称。
+
+若要省略中间节点，请使用句点来指示这些位置。 下表显示了对象名的有效格式。
+
+对象引用格式
+	
+
+说明
+
+server . database . schema . object
+	
+
+四个部分的名称。
+
+server . database .. object
+	
+
+省略架构名称。
+
+server .. schema . object
+	
+
+省略数据库名称。
+
+server ... object
+	
+
+省略数据库和架构名称。
+
+database . schema . object
+	
+
+省略服务器名。
+
+database .. object
+	
+
+省略服务器和架构名称。
+
+schema . object
+	
+
+省略服务器和数据库名称。
+
+object
+	
+
+省略服务器、数据库和架构名称。
+代码示例约定
+
+除非专门说明，否则，在 Transact-SQL 参考中提供的示例都已使用 SQL Server Management Studio 及其以下选项的默认设置进行了测试：
+
+    ANSI_NULLS
+
+    ANSI_NULL_DFLT_ON
+
+    ANSI_PADDING
+
+    ANSI_WARNINGS
+
+    CONCAT_NULL_YIELDS_NULL
+
+    QUOTED_IDENTIFIER
+
+Transact-SQL 参考中的大多数代码示例都已在运行区分大小写排序顺序的服务器上进行了测试。 测试服务器通常运行 ANSI/ISO 1252 代码页。
+
+许多代码示例用字母 N 作为 Unicode 字符串常量的前缀。 如果没有 N 前缀，则字符串被转换为数据库的默认代码页。 此默认代码页可能不识别某些字符。
